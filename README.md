@@ -1,6 +1,6 @@
 # golang源码分析
 
-本书内容基于<kbd>go1.13</kbd>
+本书内容基于<kbd>go1.16</kbd>
 
 本书为golang源码分析，goana意为golang与analysis的合并。
 
