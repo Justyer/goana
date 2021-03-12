@@ -37,7 +37,7 @@ type m struct {
 }
 ```
 
-# P
+## P
 
 P 的结构
 P 只是处理器的抽象，而非处理器本身，它存在的意义在于实现工作窃取（work stealing）算法。 简单来说，每个 P 持有一个 G 的本地队列。
@@ -69,7 +69,7 @@ type p struct {
 }
 ```
 
-# G
+## G
 
 将需要执行的函数参数进行了拷贝，保存了要执行的函数体的入口地址，用于执行
 
@@ -103,7 +103,7 @@ type g struct {
 - 管理了可被复用的 G 的全局缓存
 - 管理了 defer 池
 
-## sched结构体
+### sched结构体
 ```go
 type schedt struct {
 	lock mutex
@@ -128,7 +128,7 @@ type schedt struct {
 
 ![MPG初始化过程](sched_init.png)
 
-## M初始化
+### M初始化
 
 M 其实就是 OS 线程，它只有两个状态：自旋、非自旋。 在调度器初始化阶段，只有一个 M，那就是主 OS 线程，因此这里的 commoninit 仅仅只是对 M 进行一个初步的初始化， 该初始化包含对 M 及用于处理 M 信号的 G 的相关运算操作，未涉及工作线程的暂止和复始。
 
@@ -158,7 +158,7 @@ func mcommoninit(mp *m) {
 }
 ```
 
-## p初始化
+### p初始化
 ![p-status](p-status.png)
 
 通常情况下（在程序运行时不调整 P 的个数），P 只会在四种状态下进行切换。 当程序刚开始运行进行初始化时，所有的 P 都处于 _Pgcstop 状态， 随着 P 的初始化（runtime.procresize），会被置于 _Pidle。
@@ -334,7 +334,7 @@ procresize 这个函数相对较长，我们来总结一下它主要干了什么
 除去当前 P 之外，将有任务的 P 彼此串联成链表，将没有任务的 P 放回到 idle 链表中
 显然，在运行 P 初始化之前，我们刚刚初始化完 M，因此第 7 步中的绑定 M 会将当前的 P 绑定到初始 M 上。 而后由于程序刚刚开始，P 队列是空的，所以他们都会被链接到可运行的 P 链表上处于 _Pidle 状态。
 
-## g初始化
+### g初始化
 ![g-status](g-status.png)
 ```go
 //go:nosplit
